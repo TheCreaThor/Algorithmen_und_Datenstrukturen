@@ -3,5 +3,5 @@ project(Algorithmen_und_Datenstrukturen)
 
 set(CMAKE_C_STANDARD 11)
 
-set(SOURCE_FILES main.c Praktikum1.c)
+set(SOURCE_FILES Praktikum1.c)
 add_executable(Algorithmen_und_Datenstrukturen ${SOURCE_FILES})
