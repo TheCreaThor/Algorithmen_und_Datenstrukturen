@@ -73,12 +73,22 @@ void linsert(struct Knoten **schlange, int key)
 
  void printList(const struct Knoten *schlange)
  {
-     for( ; schlange != NULL ; schlange = schlange->next )
-     {
+     while(schlange != NULL){
          printf("%d,", schlange->key);
+         schlange = schlange->next;
      }
      printf("\n\n");
  }
+
+    int isempty(struct Knoten* schlange){
+        if(schlange == NULL){
+            return 1;
+        }
+        else{
+            return 0;
+        }
+
+    }
 
 int main(void) {
 
@@ -89,11 +99,11 @@ int main(void) {
     schlange = NULL; //Leere Liste
     //schlange = linit();
 
-    while (entscheidung != 4) {
+    while (entscheidung != 5) {
         entscheidung = 0;
 
         printf("Menue zur Warteschlangenverwaltung:\n");
-        printf("Sortiertes Einfuegen eines Elementes(1)\nLoeschen und Ausgeben des Elements mit Schluessel(2)\nAusgeben der Liste(3)\nProgramm beenden(4)\n");
+        printf("Sortiertes Einfuegen eines Elementes(1)\nLoeschen und Ausgeben des Elements mit Schluessel(2)\nAusgeben der Liste(3)\nListe leer?(4)\nProgramm beenden(5)\n");
         fflush(stdout);
 
         scanf("%d", &entscheidung);
@@ -111,6 +121,17 @@ int main(void) {
 
         if (entscheidung == 3)
             printList(schlange);
+
+        if (entscheidung == 4){
+            int ergebnis;
+            ergebnis = isempty(schlange);
+            if(ergebnis){
+                printf("Die Liste ist leer.\n\n");
+            }
+            else{
+                printf("Die Liste ist nicht leer.\n\n");
+            }
+        }
     }
     return EXIT_SUCCESS;
 }
