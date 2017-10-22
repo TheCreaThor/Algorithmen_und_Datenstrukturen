@@ -1,13 +1,44 @@
 #include <stdio.h>
 #include <stdlib.h>
-//#include <limits.h>
 
+/**
+ *  Erstellen eines Templates eines Knotens, um eine Liste erstellen zu können.
+ */
  struct Knoten
  {
      int key;               //der Wert des Keys
      struct Knoten *next;   //Zeiger auf das nächste Element
  };
 
+int ldelete(struct Knoten** schlange, int key){
+    struct Knoten* zwischenspeicher;
+    zwischenspeicher = (struct Knoten *) malloc(sizeof(*zwischenspeicher)); // Erzeuge einen neuen Knoten
+    if (zwischenspeicher == NULL) { //Fehlerüberprüfung ob überhaupt genügend Speicher alluziiert werden kann
+        printf("Fehler bei malloc()\n");
+        exit(EXIT_FAILURE);
+    }
+
+    while(*schlange != NULL){
+        if(key == (*schlange)->key){
+            if((*schlange)->next == NULL){
+                (*schlange)->next = *schlange;
+            }
+            else {
+                zwischenspeicher = *schlange;
+                *schlange = (*schlange)->next;
+                free(zwischenspeicher);
+            }
+        }
+        schlange = &(*schlange)->next;
+    }
+    return 0;
+}
+
+/**
+ * Funktion, um einzelne Knoten in sortierter Reihenfolge einzufügen. Ein Element wird in die Liste "schlange" einsortiert.
+ * @param schlange Liste, wo das Element/ Der Key eingefügt werden soll
+ * @param key Das einzufügende Element
+ */
 void linsert(struct Knoten **schlange, int key)
 {
     if(*schlange != NULL) {
@@ -71,8 +102,25 @@ void linsert(struct Knoten **schlange, int key)
 
 }
 
- void printList(const struct Knoten *schlange)
+int isempty(struct Knoten* schlange){
+    if(schlange == NULL){
+        return 1;
+    }
+    else{
+        return 0;
+    }
+
+}
+
+/**
+ * Die komplette Liste wird ausgegeben.
+ * @param schlange Ist die Liste die ausgegeben werden soll
+ */
+ void printList(struct Knoten *schlange)
  {
+     if(isempty(schlange) == 1){
+         printf("Die Liste ist leer!");
+     }
      while(schlange != NULL){
          printf("%d,", schlange->key);
          schlange = schlange->next;
@@ -80,24 +128,32 @@ void linsert(struct Knoten **schlange, int key)
      printf("\n\n");
  }
 
-    int isempty(struct Knoten* schlange){
-        if(schlange == NULL){
-            return 1;
+/**
+ * Hier wird eine leere Liste erstellt.Es wird Speicherplatz für den Listenanfang aluziiert.
+ * @return Die leere Liste wird zurückgegeben.
+ */
+    struct Knoten* linit(){
+        struct Knoten *anfang;
+        anfang = (struct Knoten *) malloc(sizeof(*anfang)); // Erzeuge einen neuen Knoten
+        if (anfang == NULL) { //Fehlerüberprüfung ob überhaupt genügend Speicher alluziiert werden kann
+            printf("Fehler bei malloc()\n");
+            exit(EXIT_FAILURE);
         }
-        else{
-            return 0;
-        }
-
+        anfang = NULL; //Leere Liste
+        return anfang;
     }
 
+/**
+ * Hier läuft der gesamte Prozess ab und die Fuktionen werden, je nach Benutzereinabe, aufgerufen.
+ * @return Gibt 0 zurück, wenn das Programm erfolgreich beendet wurde, andernfalls gibt return einen anderen Wert außer 0 zurück
+ */
 int main(void) {
 
     int entscheidung = 0;
     //char buffer[MAX]; //Um unnötige Eingaben zu ignorieren
 
     struct Knoten *schlange;
-    schlange = NULL; //Leere Liste
-    //schlange = linit();
+    schlange = linit();
 
     while (entscheidung != 5) {
         entscheidung = 0;
@@ -116,8 +172,12 @@ int main(void) {
             linsert(&schlange, key);
         }
 
-        //if (entscheidung == 2)
-        //    ldelete(schlange, key);
+        if (entscheidung == 2) {
+            int key;
+            printf("Geben Sie einen Wert ein:\n");
+            scanf("%d", &key);
+            ldelete(&schlange, key);
+        }
 
         if (entscheidung == 3)
             printList(schlange);
