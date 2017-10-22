@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+//#include <limits.h>
 
  struct Knoten
  {
@@ -9,32 +10,51 @@
 
 void linsert(struct Knoten **schlange, int key)
 {
-    //Bis zum Ende der Schlange laufen, damit man den neuen Knoten einfügen kann
-    while( *schlange != NULL )
-    {
-        if(key > (*schlange)->key) {
+    if(*schlange != NULL) {
+        if (key < (*schlange)->key) {
             struct Knoten *neuesElement;
-            neuesElement = (struct Knoten*)malloc(sizeof(*neuesElement)); // Erzeuge einen neuen Knoten
-            if (neuesElement == NULL) { //Fehlerüberprüfung ob überhaupt genügend Speicher alluziiert werden kann
+            neuesElement = (struct Knoten *) malloc(sizeof(*neuesElement)); // Erzeuge einen neuen Knoten
+            if (neuesElement ==
+                NULL) { //Fehlerüberprüfung ob überhaupt genügend Speicher alluziiert werden kann
                 printf("Fehler bei malloc()\n");
                 exit(EXIT_FAILURE);
             }
-
             neuesElement->key = key;
-            if((*schlange)->next == NULL){
-                neuesElement->next = NULL;
-                (*schlange)->next = neuesElement;
-                return;
-            } else{
-                neuesElement->next = (*schlange)->next;
-                (*schlange)->next = neuesElement;
-                return;
+            neuesElement->next = *schlange;
+            *schlange = neuesElement;
+            return;
+        }
+    }
+    //Bis zum Ende der Schlange laufen, damit man den neuen Knoten einfügen kann
+    while( *schlange != NULL ) {
+        if (key >= (*schlange)->key) {
+            if ((*schlange)->next != NULL) {
+                if (key < ((*schlange)->next)->key) {
+                    struct Knoten *neuesElement;
+                    neuesElement = (struct Knoten *) malloc(sizeof(*neuesElement)); // Erzeuge einen neuen Knoten
+                    if (neuesElement ==
+                        NULL) { //Fehlerüberprüfung ob überhaupt genügend Speicher alluziiert werden kann
+                        printf("Fehler bei malloc()\n");
+                        exit(EXIT_FAILURE);
+                    }
+
+                    neuesElement->key = key;
+                    if ((*schlange)->next == NULL) {
+                        neuesElement->next = NULL;
+                        (*schlange)->next = neuesElement;
+                        return;
+                    } else {
+                        neuesElement->next = (*schlange)->next;
+                        (*schlange)->next = neuesElement;
+                        return;
+                    }
+                }
             }
         }
         schlange = &(*schlange)->next;
     }
 
-    if( *schlange == NULL ) {
+    if(*schlange == NULL){
         struct Knoten *neuesElement;
         neuesElement = (struct Knoten *) malloc(sizeof(*neuesElement)); // Erzeuge einen neuen Knoten
         if (neuesElement == NULL) { //Fehlerüberprüfung ob überhaupt genügend Speicher alluziiert werden kann
@@ -56,8 +76,8 @@ void linsert(struct Knoten **schlange, int key)
      for( ; schlange != NULL ; schlange = schlange->next )
      {
          printf("%d,", schlange->key);
-         printf("\n");
      }
+     printf("\n\n");
  }
 
 int main(void) {
@@ -72,7 +92,7 @@ int main(void) {
     while (entscheidung != 4) {
         entscheidung = 0;
 
-        printf("Menue zur Warteschlangenverwaltung:\n\n");
+        printf("Menue zur Warteschlangenverwaltung:\n");
         printf("Sortiertes Einfuegen eines Elementes(1)\nLoeschen und Ausgeben des Elements mit Schluessel(2)\nAusgeben der Liste(3)\nProgramm beenden(4)\n");
         fflush(stdout);
 
@@ -83,7 +103,6 @@ int main(void) {
             int key;
             printf("Geben Sie einen Wert ein:\n");
             scanf("%d", &key);
-
             linsert(&schlange, key);
         }
 
