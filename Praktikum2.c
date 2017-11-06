@@ -12,9 +12,8 @@ void ausgabe(int brett[]) {
     }
     //Feld mit Positionen befüllen:
     for (int i = 0; i < 8; i++) {
-        feld[brett[i] - 1][i] = 'D';
+        feld[brett[i]][i] = 'D';
     }
-
     //Feld ausdrucken:
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
@@ -25,12 +24,20 @@ void ausgabe(int brett[]) {
     }
 }
 
-int main(int argc, char *argv[]) {
-    int brett[8];
-    for (int i = 0; i < 8; i++) {
-        brett[i] = 2;
-    }
+void setze (int brett[]){
+    brett[0]=0;
 
+
+
+}
+
+int main(int argc, char *argv[]) {
+    //Schachbrett anlegen(8x8):
+    int brett[8]; //brett[i] = j, in der i-ten Spalte des Schachbrettes, steht die Dame auf der j-ten Reihe
+    for (int i = 0; i < 8; i++) {
+        brett[i] = -9999;
+    }
+    setze(brett);
     ausgabe(brett);
     return EXIT_SUCCESS;
 }
