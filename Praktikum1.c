@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+//test
 /**
  *  Erstellen eines Templates eines Knotens, um eine Liste erstellen zu koennen.
  */
