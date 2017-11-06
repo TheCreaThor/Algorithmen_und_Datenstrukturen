@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-//test
+
 /**
  *  Erstellen eines Templates eines Knotens, um eine Liste erstellen zu koennen.
  */
@@ -162,8 +162,7 @@ int isempty(struct Knoten* schlange){
  * Hier laeuft der gesamte Prozess ab und die Fuktionen werden, je nach Benutzereinabe, aufgerufen.
  * @return Gibt 0 zurueck, wenn das Programm erfolgreich beendet wurde, andernfalls gibt return einen anderen Wert außer 0 zurueck
  */
-int main(void) {
-
+int main(int argc, char* argv[]) {
     int entscheidung = 0;
     //char buffer[MAX]; //Um unnoetige Eingaben zu ignorieren
 
