@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#define GROESSE 10000
 
-int arrayToSort[150000];
+int arrayToSort[GROESSE];
 double ergebnisarray[6][4];                                                    //ersten 3 Spalten sind für das Ergebnis der drei Durchläufe, letzte Spalte für den Durchschnitt
 
 /**
@@ -13,6 +14,7 @@ double ergebnisarray[6][4];                                                    /
  */
 double SelectionSort(int sort[], int n){
     clock_t start, end;
+    double total;
     start = clock();
 
     int min, zwspeicher;
@@ -27,7 +29,8 @@ double SelectionSort(int sort[], int n){
     }
 
     end = clock();
-    return (end-start)/1000;
+    total = ((double)(end-start))/CLOCKS_PER_SEC;
+    return  total;
 }
 
 /**
@@ -38,6 +41,7 @@ double SelectionSort(int sort[], int n){
  */
 double Insertionsort(int sort[], int n){
     clock_t start, end;
+    double total;
     start = clock();
 
     int vorherig, momentan;
@@ -52,39 +56,40 @@ double Insertionsort(int sort[], int n){
         }
 
     end = clock();
-    return (end-start)/1000;
+    total = ((double)(end-start))/CLOCKS_PER_SEC;
+    return  total;
     }
 
 int main(int argc, char* argv[]){
     for(int durchlauf = 0; durchlauf < 3; durchlauf++){                        //jedes Sortierverfahren soll drei Mal ausgeführt werden, um nachher ein Durchschnitt bilden zu können
 
-        for(int i = 1; i <= 150000; i++){                                      //Array aufsteigend befüllen:
+        for(int i = 1; i <= GROESSE; i++){                                      //Array aufsteigend befüllen:
             arrayToSort[i - 1] = i;
         }
-        ergebnisarray[0][durchlauf] = SelectionSort(arrayToSort, 150000);      //Sortierungsverfahren für ein aufsteigendes Array ausführen
-        ergebnisarray[3][durchlauf] = Insertionsort(arrayToSort, 150000);      //verbrauchte Zeit des Sortierens wird in einem Ergebnisarray gespeichert
+        ergebnisarray[0][durchlauf] = SelectionSort(arrayToSort, GROESSE);      //Sortierungsverfahren für ein aufsteigendes Array ausführen
+        ergebnisarray[3][durchlauf] = Insertionsort(arrayToSort, GROESSE);      //verbrauchte Zeit des Sortierens wird in einem Ergebnisarray gespeichert
 
         int k = 1;                                                             //Array absteigend befüllen:
-        for(int j = 149999; j >= 0; j--){
+        for(int j = GROESSE-1; j >= 0; j--){
             arrayToSort[j] = k;
             k++;
         }
-        ergebnisarray[1][durchlauf] = SelectionSort(arrayToSort, 150000);      //Sortierungsverfahren für ein aufsteigendes Array ausführen
-        ergebnisarray[4][durchlauf] = Insertionsort(arrayToSort, 150000);      //verbrauchte Zeit des Sortierens wird in einem Ergebnisarray gespeichert
+        ergebnisarray[1][durchlauf] = SelectionSort(arrayToSort, GROESSE);      //Sortierungsverfahren für ein aufsteigendes Array ausführen
+        ergebnisarray[4][durchlauf] = Insertionsort(arrayToSort, GROESSE);      //verbrauchte Zeit des Sortierens wird in einem Ergebnisarray gespeichert
 
         srand((unsigned) time(NULL));                                          //Array zufällig befüllen:
-        for(int l = 0; l < 150000; l++){
+        for(int l = 0; l < GROESSE; l++){
             arrayToSort[l] = rand();
         }
-        ergebnisarray[2][durchlauf] = SelectionSort(arrayToSort, 150000);      //Sortierungsverfahren für ein aufsteigendes Array ausführen
-        ergebnisarray[5][durchlauf] = Insertionsort(arrayToSort, 150000);      //verbrauchte Zeit des Sortierens wird in einem Ergebnisarray gespeichert
+        ergebnisarray[2][durchlauf] = SelectionSort(arrayToSort, GROESSE);      //Sortierungsverfahren für ein aufsteigendes Array ausführen
+        ergebnisarray[5][durchlauf] = Insertionsort(arrayToSort, GROESSE);      //verbrauchte Zeit des Sortierens wird in einem Ergebnisarray gespeichert
     }
     printf("Das Ergebnis der Laufzeiten- Analyse der Sortierverfahren ist:\n\n");
-    printf("Sorierverfahren             |     1     |     2     |     3     |     ⌀     \n\n");
-    printf("Selectionsort: Aufsteigend  |%.5f|%.5f|%.5f|%.5f|\n", ergebnisarray[0][0], ergebnisarray[0][1], ergebnisarray[0][2], (ergebnisarray[0][0] + ergebnisarray[0][1] + ergebnisarray[0][2])/3);
-    printf("Selectionsort: Absteigend   |%.5f|%.5f|%.5f|%.5f|\n", ergebnisarray[1][0], ergebnisarray[1][1], ergebnisarray[1][2], (ergebnisarray[1][0] + ergebnisarray[1][1] + ergebnisarray[1][2])/3);
-    printf("Selectionsort: Zufällig    |%.5f|%.5f|%.5f|%.5f|\n\n", ergebnisarray[2][0], ergebnisarray[2][1], ergebnisarray[2][2], (ergebnisarray[2][0] + ergebnisarray[2][1] + ergebnisarray[2][2])/3);
-    printf("Insertionsort: Aufsteigend  |%.5f|%.5f|%.5f|%.5f|\n", ergebnisarray[3][0], ergebnisarray[3][1], ergebnisarray[3][2], (ergebnisarray[3][0] + ergebnisarray[3][1] + ergebnisarray[3][2])/3);
-    printf("Insertionsort: Absteigend   |%.5f|%.5f|%.5f|%.5f|\n", ergebnisarray[4][0], ergebnisarray[4][1], ergebnisarray[4][2], (ergebnisarray[4][0] + ergebnisarray[4][1] + ergebnisarray[4][2])/3);
-    printf("Insertionsort: Zufällig    |%.5f|%.5f|%.5f|%.5f|\n\n", ergebnisarray[5][0], ergebnisarray[5][1], ergebnisarray[5][2], (ergebnisarray[5][0] + ergebnisarray[5][1] + ergebnisarray[5][2])/3);
+    printf("Sorierverfahren             |1\t\t\t\t\t|2\t\t\t\t\t|3\t\t\t\t\t|⌀\t\t\t\t\t|\n\n");
+    printf("Selectionsort: Aufsteigend  |%.5f\t\t\t|%.5f\t\t\t|%.5f\t\t\t|%.5f\t\t\t|\n", ergebnisarray[0][0], ergebnisarray[0][1], ergebnisarray[0][2], (ergebnisarray[0][0] + ergebnisarray[0][1] + ergebnisarray[0][2])/3);
+    printf("Selectionsort: Absteigend   |%.5f\t\t\t|%.5f\t\t\t|%.5f\t\t\t|%.5f\t\t\t|\n", ergebnisarray[1][0], ergebnisarray[1][1], ergebnisarray[1][2], (ergebnisarray[1][0] + ergebnisarray[1][1] + ergebnisarray[1][2])/3);
+    printf("Selectionsort: Zufällig     |%.5f\t\t\t|%.5f\t\t\t|%.5f\t\t\t|%.5f\t\t\t|\n\n", ergebnisarray[2][0], ergebnisarray[2][1], ergebnisarray[2][2], (ergebnisarray[2][0] + ergebnisarray[2][1] + ergebnisarray[2][2])/3);
+    printf("Insertionsort: Aufsteigend  |%.5f\t\t\t|%.5f\t\t\t|%.5f\t\t\t|%.5f\t\t\t|\n", ergebnisarray[3][0], ergebnisarray[3][1], ergebnisarray[3][2], (ergebnisarray[3][0] + ergebnisarray[3][1] + ergebnisarray[3][2])/3);
+    printf("Insertionsort: Absteigend   |%.5f\t\t\t|%.5f\t\t\t|%.5f\t\t\t|%.5f\t\t\t|\n", ergebnisarray[4][0], ergebnisarray[4][1], ergebnisarray[4][2], (ergebnisarray[4][0] + ergebnisarray[4][1] + ergebnisarray[4][2])/3);
+    printf("Insertionsort: Zufällig     |%.5f\t\t\t|%.5f\t\t\t|%.5f\t\t\t|%.5f\t\t\t|\n\n", ergebnisarray[5][0], ergebnisarray[5][1], ergebnisarray[5][2], (ergebnisarray[5][0] + ergebnisarray[5][1] + ergebnisarray[5][2])/3);
 }
