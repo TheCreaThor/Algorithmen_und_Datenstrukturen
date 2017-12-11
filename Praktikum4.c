@@ -2,9 +2,10 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define M 7                          //Primzahl, damit alle Zahlen berücksichtigt werden!
+
+#define M 7                       //Primzahl, damit alle Zahlen berücksichtigt werden!
 #define ZUFALLARRAYGROESSE 49
-#define DURCHLAEUFE 1
+#define DURCHLAEUFE 3
 #define UEBERSICHT 100
 
 /**
@@ -23,6 +24,7 @@ static struct node *koepfe[M], *ende, *newNode, *temp, *start, *freetemp;    //e
  * @param array: Das Array, was mit Zufallszahlen befüllt werden soll
  */
 void fillArray(int array[]) {
+    sleep(1);
     srand((unsigned) time(NULL));
     for (int i = 0; i < ZUFALLARRAYGROESSE; i++) {
         array[i] = rand() % UEBERSICHT;
@@ -145,6 +147,7 @@ void freeSpeicher(){
         free(koepfe[i]);                //zuletzt auch immer den jeweiligen Kopf- Knoten an der jeweiligen Position freigeben
     }
     free(temp);
+    printf("\n");
 }
 
 /**
