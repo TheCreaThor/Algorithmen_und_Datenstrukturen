@@ -3,9 +3,8 @@
 #include <time.h>
 #include <limits.h>
 
-#define GROESSE 15000
+#define GROESSE 150000
 
-int arrayToSort[GROESSE];
 double ergebnisarray[15][4];                                                    //ersten 3 Spalten sind für das Ergebnis der drei Durchläufe, letzte Spalte für den Durchschnitt
 static int N;
 
@@ -187,7 +186,7 @@ double heapsort(int sort[], int laenge){
 /**
  * Sortiert das Array aufsteigend.
  */
-void arrayAufsteigend(){
+void arrayAufsteigend(int arrayToSort[]){
     for (int i = 1; i <= GROESSE; i++) {                                      //Array aufsteigend befüllen:
         arrayToSort[i - 1] = i;
     }
@@ -196,7 +195,7 @@ void arrayAufsteigend(){
 /**
  * Sortiert das Array absteigend.
  */
-void arrayAbsteigend() {
+void arrayAbsteigend(int arrayToSort[]) {
     int k = 1;                                                                 //Array absteigend befüllen:
     for (int j = GROESSE - 1; j >= 0; j--) {
         arrayToSort[j] = k;
@@ -207,7 +206,7 @@ void arrayAbsteigend() {
 /**
  * Sortiert das Array zufällig.
  */
-void arrayZufaellig(){
+void arrayZufaellig(int arrayToSort[]){
     srand((unsigned) time(NULL));                                              //Array zufällig befüllen:
     for (int l = 0; l < GROESSE; l++) {
         arrayToSort[l] = rand();
@@ -215,40 +214,41 @@ void arrayZufaellig(){
 }
 
 int main(int argc, char* argv[]){
+    int *arrayToSort = malloc(GROESSE*sizeof(int));
     for(int durchlauf = 0; durchlauf < 3; durchlauf++){                        //jedes Sortierverfahren soll drei Mal ausgeführt werden, um nachher ein Durchschnitt bilden zu können
 
-        arrayAufsteigend();
+        arrayAufsteigend(arrayToSort);
         ergebnisarray[0][durchlauf] = selectionSort(arrayToSort, GROESSE);      //Sortierungsverfahren für ein aufsteigendes Array ausführen
-        arrayAufsteigend();                                                     //verbrauchte Zeit des Sortierens wird in einem Ergebnisarray gespeichert
+        arrayAufsteigend(arrayToSort);                                                     //verbrauchte Zeit des Sortierens wird in einem Ergebnisarray gespeichert
         ergebnisarray[3][durchlauf] = insertionsort(arrayToSort, GROESSE);
-        arrayAufsteigend();
+        arrayAufsteigend(arrayToSort);
         ergebnisarray[6][durchlauf] = shellsort(arrayToSort, GROESSE);
-        arrayAufsteigend();
-        ergebnisarray[9][durchlauf] = quicksort(arrayToSort, 0, GROESSE);
-        arrayAufsteigend();
+        //arrayAufsteigend(arrayToSort);
+        //ergebnisarray[9][durchlauf] = quicksort(arrayToSort, 0, GROESSE-1);
+        arrayAufsteigend(arrayToSort);
         ergebnisarray[12][durchlauf] = heapsort(arrayToSort, GROESSE);
 
-        arrayAbsteigend();
+        arrayAbsteigend(arrayToSort);
         ergebnisarray[1][durchlauf] = selectionSort(arrayToSort, GROESSE);      //Sortierungsverfahren für ein aufsteigendes Array ausführen
-        arrayAbsteigend();                                                      //verbrauchte Zeit des Sortierens wird in einem Ergebnisarray gespeichert
+        arrayAbsteigend(arrayToSort);                                                      //verbrauchte Zeit des Sortierens wird in einem Ergebnisarray gespeichert
         ergebnisarray[4][durchlauf] = insertionsort(arrayToSort, GROESSE);
-        arrayAbsteigend();
+        arrayAbsteigend(arrayToSort);
         ergebnisarray[7][durchlauf] = shellsort(arrayToSort, GROESSE);
-        arrayAbsteigend();
-        ergebnisarray[10][durchlauf] = quicksort(arrayToSort, 0, GROESSE);
-        arrayAbsteigend();
+        //arrayAbsteigend(arrayToSort);
+        //ergebnisarray[10][durchlauf] = quicksort(arrayToSort, 0, GROESSE);
+        arrayAbsteigend(arrayToSort);
         ergebnisarray[13][durchlauf] = heapsort(arrayToSort, GROESSE);
 
 
-        arrayZufaellig();
+        arrayZufaellig(arrayToSort);
         ergebnisarray[2][durchlauf] = selectionSort(arrayToSort, GROESSE);      //Sortierungsverfahren für ein aufsteigendes Array ausführen
-        arrayZufaellig();                                                       //verbrauchte Zeit des Sortierens wird in einem Ergebnisarray gespeichert
+        arrayZufaellig(arrayToSort);                                                       //verbrauchte Zeit des Sortierens wird in einem Ergebnisarray gespeichert
         ergebnisarray[5][durchlauf] = insertionsort(arrayToSort, GROESSE);
-        arrayZufaellig();
+        arrayZufaellig(arrayToSort);
         ergebnisarray[8][durchlauf] = shellsort(arrayToSort, GROESSE);
-        arrayZufaellig();
+        arrayZufaellig(arrayToSort);
         ergebnisarray[11][durchlauf] = quicksort(arrayToSort, 0, GROESSE);
-        arrayZufaellig();
+        arrayZufaellig(arrayToSort);
         ergebnisarray[14][durchlauf] = heapsort(arrayToSort, GROESSE);
     }
     printf("Das Ergebnis der Laufzeiten- Analyse der Sortierverfahren ist:\n\n");
