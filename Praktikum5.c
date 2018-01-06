@@ -37,7 +37,7 @@ void initskip(char suchText[], int skip[]){
     for(int i = 0; i < ALPHABETGROESSE; i++) {
         skip[i] = m;
     }
-    for(int j = 0; j<m-1; j++){
+    for(int j = 0; j<m-1; j++){                     //"-1", da der letzte Buchstabe des suchWortes auch mit m Schritten initialisiert werden muss
         skip[returnIndex(suchText[j])] = m-j-1;
     }
 }
@@ -59,12 +59,12 @@ int mischarsearch(char text[], char suchText[], int skip[]) {
     initskip(suchText, skip);
                                                                       //i: für die i. Stelle im zu suchenden Text, j: für die j. Stelle in der Zeichenfolge
     for (i = laengeSuche-1, j = laengeSuche-1; j >= 0; i--, j--) {    //"-1", da strlen-1 die letzte Stelle des Array angibt
+        anzahlSchritte++;
         while (text[i] != suchText[j]) {                              //wenn die Buchstaben an der gleichen Stelle ungleich sind
             t = skip[returnIndex(text[i])];                           //suche den Wert aus der skip- Tabelle wie weit man nach rechts springen muss, um weiter zu suchen
             i += (laengeSuche - j > t) ? laengeSuche - j : t;         //springe um skip(t), mindestens aber um 1 nach rechts oder springe um ein ganzes Wort(Fall, wenn if wahr ist)
             if (i >= laengeText) return -1;                           //der Fall, wenn das Wort nicht gefunden wurde und man am Ende des Textes angelangt ist
             j = laengeSuche - 1;                                      //setze Musterzeiger ganz nach rechts, um eine erneute Suche der Zeichenfolge vorzubereiten
-            anzahlSchritte++;
         }
     }
     return i+1;                                                       //genau die Stelle, ab der das SuchWort im Text gefunden werden kann
@@ -96,7 +96,7 @@ int rksearch(char text[], char suchText[]) {
         anzahlSchritte ++;
         hashText = (hashText + BASIS*PRIMZAHL - returnIndex(text[i])*dM) % PRIMZAHL;    //Produkt BASIS*PRIMZAHL zur Sicherstellung, dass hashText > 0
         hashText = (hashText*BASIS + returnIndex(text[i+laengeSuche])) % PRIMZAHL;      //beide "hashText="- Zeilen sind eine Rechnung mit dem HashText- Wert und tragen dazu bei, dass der Hash- Wert des naechsten Abschnittes(der um ein nach rechts gerutscht ist) berechnet wird
-        if (i > laengeText-laengeSuche) return -1;                                      //wenn der Indes 'i' an dem Punkt im Text angekommen ist, dass das zu suchende Wort gerade nicht mehr rein passt, wird zurückgegeben, dass das Wort nicht gefunden wurde
+        if (i > laengeText-laengeSuche) return -1;                                      //wenn der Index 'i' an dem Punkt im Text angekommen ist, dass das zu suchende Wort gerade nicht mehr rein passt, wird zurückgegeben, dass das Wort nicht gefunden wurde
     }
     return i;                                                                           //genau die Stelle, ab der das SuchWort im Text gefunden werden kann
 }
@@ -178,7 +178,7 @@ void ergebnisAusgabe(char text[], char suchText[], int ergebnis) {
         while(eingabe != 5){
             printf("1) konstanten Text ausgeben\n2) Suchwort eingeben und prüfen[mit Boyer- Moore]\n3) Suchwort eingeben und prüfen[mit Rabin- Karp]\n4) Suchwort im Text anzeigen lassen\n5) Programm beenden\n\n");
             scanf("%d",&eingabe);
-            //ergebnis = 0;
+            ergebnis = 0;
             anzahlSchritte = 0;
             switch(eingabe){
                 case 1: printf("%s\n\n",text); break;
